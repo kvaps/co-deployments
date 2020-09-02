@@ -61,7 +61,6 @@ status:
   storedVersions: []
 
 ---
-
 ################# CSI Driver CRD ###########
 apiVersion: storage.k8s.io/v1beta1
 kind: CSIDriver
@@ -179,7 +178,7 @@ spec:
             - name: root-dir
               mountPath: /host
         - name: csi-volume-mutator
-          image: hpestorage/volume-mutator:v1.3.0-beta
+          image: quay.io/hpestorage/volume-mutator:v1.0.0-beta
           args:
             - "--v=5"
             - "--csi-address=$(ADDRESS)"
@@ -191,7 +190,7 @@ spec:
             - name: socket-dir
               mountPath: /var/lib/csi/sockets/pluginproxy/
         - name: csi-extensions
-          image: hpestorage/csi-extensions:v1.3.0-beta
+          image: quay.io/hpestorage/csi-extensions:v1.0.0-beta
           args:
             - "--v=5"
             - "--endpoint=$(CSI_ENDPOINT)"
@@ -547,13 +546,28 @@ rules:
     verbs: ["get", "list"]
   - apiGroups: [""]
     resources: ["secrets"]
-    verbs: ["get"]
+    verbs: ["get", "list"]
   - apiGroups: [""]
     resources: ["services"]
     verbs: ["get"]
   - apiGroups: [""]
     resources: ["persistentvolumes"]
     verbs: ["get", "list"]
+  - apiGroups: ["storage.hpe.com"]
+    resources: ["hpevolumeinfos"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["storage.hpe.com"]
+    resources: ["hpereplicationdeviceinfos"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims"]
+    verbs: ["get", "list"]
+  - apiGroups: [""]
+    resources: ["namespaces"]
+    verbs: ["get", "list"]
+  - apiGroups: ["storage.k8s.io"]
+    resources: ["storageclasses"]
+    verbs: ["get", "list", "watch"]
 
 ---
 
