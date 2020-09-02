@@ -154,6 +154,10 @@ spec:
         - name: linux-config-file
           configMap:
             name: hpe-linux-config
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .| nindent 8 }}
+      {{- end }}
       tolerations:
         - effect: NoExecute
           key: node.kubernetes.io/not-ready

@@ -48,6 +48,10 @@ spec:
         - name: log-dir
           hostPath:
             path: /var/log
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .| nindent 8 }}
+      {{- end }}
       tolerations:
         - effect: NoExecute
           key: node.kubernetes.io/not-ready
